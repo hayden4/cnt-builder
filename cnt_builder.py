@@ -76,7 +76,7 @@ class CarbonNanotube:
 
 
 # builds a armchair (n,n) CNT
-def cnt_system(filename, separation):
+def cnt_system(filename, separation, angle):
     # CNT Configuration
     # s = C-C bond length
     # n = number of carbon atoms in ring -1
@@ -97,7 +97,7 @@ def cnt_system(filename, separation):
     cnt2 = CarbonNanotube(s, n, L)
     cnt2.buildCNT()
     cnt2.translate(separation)
-    cnt2.rotateCNT(math.pi/2)
+    cnt2.rotateCNT(angle)
 
     # Combine tubes
     atoms = [a for a in cnt1.atoms]
@@ -118,15 +118,18 @@ def cnt_system(filename, separation):
     outfile.write("\t" + str(len(bonds)) + " bonds\n")
     outfile.write("\t1 atom types\n")
     outfile.write("\t1 bond types\n")
-    outfile.write("\t{a} {b} xlo xhi\n".format(a=-1000, b=1000))
-    outfile.write("\t{a} {b} ylo yhi\n".format(a=-1000, b=1000))
-    outfile.write("\t{a} {b} zlo zhi\n".format(a=-1000, b=1000))
+    outfile.write("\t{a} {b} xlo xhi\n".format(a=-100, b=100))
+    outfile.write("\t{a} {b} ylo yhi\n".format(a=-100, b=100))
+    outfile.write("\t{a} {b} zlo zhi\n".format(a=-100, b=100))
     outfile.write("\nMasses\n\n")
     outfile.write("1 1\n")
     outfile.write("\nAtoms\n\n")
 
-    for i in range(len(atoms)):
+    for i in range(atomid_offset):
         outfile.write("{i} 1 1 0 {x} {y} {z}\n".format(i=i+1, x=atoms[i][0], y=atoms[i][1], z=atoms[i][2]))
+    
+    for i in range(atomid_offset, len(atoms)):
+    	outfile.write("{i} 2 1 0 {x} {y} {z}\n".format(i=i+1, x=atoms[i][0], y=atoms[i][1], z=atoms[i][2]))
 
     outfile.write("\nBonds\n\n")
 

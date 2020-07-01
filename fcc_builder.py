@@ -65,12 +65,10 @@ class FCC_Tube:
 
 
 # Builds a FCC Crystal
-def main():
-    separation = float(sys.argv[1])
-
-    radius = 3.0
+def fcc_system(filename, separation, angle):
+    radius = 1.0
     length = 25 * radius
-    bond_length = 1.0
+    bond_length = 0.3
 
     fcc1 = FCC_Tube(radius, length, bond_length)
     fcc2 = FCC_Tube(radius, length, bond_length)
@@ -79,15 +77,16 @@ def main():
     fcc2.buildFCC()
 
     fcc2.translate([separation, 0, 0])
-    fcc2.rotate(math.pi/2)
+    fcc2.rotate(angle)
 
 
     atoms = [a for a in fcc1.atoms]
+    atomid_offset = len(atoms)
     for atom in fcc2.atoms:
         atoms.append(atom)
 
     # Write to file
-    outfile = open('fcc.lammps', 'w')
+    outfile = open(filename, 'w')
     outfile.write("LAMMPS Description\n\n")
     outfile.write("\t" + str(len(atoms)) + " atoms\n")
     outfile.write("\t1 atom types\n")
@@ -98,8 +97,11 @@ def main():
     outfile.write("1 1\n")
     outfile.write("\nAtoms\n\n")
 
-    for i in range(len(atoms)):
+    for i in range(atomid_offset):
         outfile.write("{i} 1 1 0 {x} {y} {z}\n".format(i=i+1, x=atoms[i][0], y=atoms[i][1], z=atoms[i][2]))
+    
+    for i in range(atomid_offset):
+        outfile.write("{i} 2 1 0 {x} {y} {z}\n".format(i=i+1, x=atoms[i][0], y=atoms[i][1], z=atoms[i][2]))
 
     outfile.close()
         
