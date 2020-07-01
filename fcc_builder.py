@@ -43,14 +43,14 @@ class FCC_Tube:
             self.atoms[i] = [self.atoms[i][j] + vec[j] for j in range(3)]
 
     def rotate(self, angle):
-        dy = self.length * math.sin(angle)/2
-        dz = self.length * (1 - math.cos(angle))/2
+        dz = self.length * (1 - math.cos(angle)) / 2
         for i in range(len(self.atoms)):
             pos = self.atoms[i]
             self.atoms[i] = [
-                pos[0],
-                pos[1] * math.cos(angle) - pos[2] * math.sin(angle) + dy,
-                pos[1] * math.sin(angle) + pos[2] * math.cos(angle) + dz]
+                    pos[0],
+                    pos[1] * math.cos(angle) - pos[2] * math.sin(angle),
+                    pos[1] * math.sin(angle) + pos[2] * math.cos(angle) + dz
+                ]
 
     def cutTube(self):
         keep_atoms = []
@@ -76,8 +76,8 @@ def fcc_system(filename, separation, angle):
     fcc1.buildFCC()
     fcc2.buildFCC()
 
-    fcc2.translate([separation, 0, 0])
-    fcc2.rotate(angle)
+    fcc2.rotate(-angle)
+    fcc2.translate([0, separation, 0])
 
 
     atoms = [a for a in fcc1.atoms]
