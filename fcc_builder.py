@@ -7,15 +7,15 @@ class FCC_Tube:
         self.radius = radius
         self.length = length
         self.a = a
-        self.l = 2*(int(radius/a)+1)
-        self.m = 2*(int(radius/a)+1)
-        self.n = 2*(int(length))
+        self.l = 4*(int(radius/a)+1)
+        self.m = 4*(int(radius/a)+1)
+        self.n = 4*(int(length))
         self.atoms = []
 
     def buildFCC(self):
         for k in range(self.n):
             self.buildLayer(k)
-        self.translate([-self.l/2, -self.m/2, 0])
+        self.translate([-self.a*(self.l-1)/2, -self.a*(self.m-1)/2, 0])
         self.cutTube()
 
 
@@ -100,13 +100,7 @@ def fcc_system(filename, separation, angle):
     for i in range(atomid_offset):
         outfile.write("{i} 1 1 0 {x} {y} {z}\n".format(i=i+1, x=atoms[i][0], y=atoms[i][1], z=atoms[i][2]))
     
-    for i in range(atomid_offset):
+    for i in range(atomid_offset, len(atoms)):
         outfile.write("{i} 2 1 0 {x} {y} {z}\n".format(i=i+1, x=atoms[i][0], y=atoms[i][1], z=atoms[i][2]))
 
     outfile.close()
-        
-
-
-
-if __name__ == '__main__':
-    main()
