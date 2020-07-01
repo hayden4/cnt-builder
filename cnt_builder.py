@@ -99,7 +99,7 @@ def main():
     # Build CNT 2
     cnt2 = CarbonNanotube(s, n, L)
     cnt2.buildCNT()
-    cnt2.translate(20)
+    cnt2.translate(separation)
     cnt2.rotateCNT(math.pi/2)
 
     # Combine tubes
