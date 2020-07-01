@@ -1,5 +1,4 @@
 import math
-import sys
 
 class CarbonNanotube:
     
@@ -77,9 +76,7 @@ class CarbonNanotube:
 
 
 # builds a armchair (n,n) CNT
-def main():
-    separation = float(sys.argv[1])
-
+def cnt_system(filename, separation):
     # CNT Configuration
     # s = C-C bond length
     # n = number of carbon atoms in ring -1
@@ -99,7 +96,7 @@ def main():
     # Build CNT 2
     cnt2 = CarbonNanotube(s, n, L)
     cnt2.buildCNT()
-    cnt2.translate(20)
+    cnt2.translate(separation)
     cnt2.rotateCNT(math.pi/2)
 
     # Combine tubes
@@ -115,7 +112,7 @@ def main():
 
     # Generate initial ring
 
-    outfile = open('cnt.lammps', 'w')
+    outfile = open(filename, 'w')
     outfile.write("LAMMPS Description\n\n")
     outfile.write("\t" + str(len(atoms)) + " atoms\n")
     outfile.write("\t" + str(len(bonds)) + " bonds\n")
@@ -137,9 +134,3 @@ def main():
         outfile.write("{i} 1 {a} {b}\n".format(i=i+1, a=bonds[i][0], b=bonds[i][1]))
 
     outfile.close()
-        
-
-
-
-if __name__ == '__main__':
-    main()
